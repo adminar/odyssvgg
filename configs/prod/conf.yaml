@@ -1,10 +1,10 @@
 server:
-  mode: "debug"
+  mode: "release"
   address: ":8000"
   log_file_name: "log/odyssey.log"
 
 mysql:
-  dsn: "root:1234@tcp(127.0.0.1:3306)/ops_center?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:1234@tcp(127.0.0.1:3306)/odyssey?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
   address: "127.0.0.1:6379"

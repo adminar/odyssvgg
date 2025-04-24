@@ -9,7 +9,7 @@ mysql:
 redis:
   address: "172.25.0.94:6379"
   username: ""
-  password: "1234"
+  password: ""
   db: 0
 
 feishu:

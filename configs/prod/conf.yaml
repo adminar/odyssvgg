@@ -4,23 +4,9 @@ server:
   log_file_name: "log/odyssey.log"
 
 mysql:
-  dsn: "root:1234@tcp(127.0.0.1:3306)/odyssey?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:1234@tcp(mysql:3306)/odyssey?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
-  address: "127.0.0.1:6379"
-  username: ""
-  password: ""
+  address: "redis:6379"
+  password: "1234"
   db: 0
-
-feishu:
-  app_id: ""
-  app_secret: ""
-
-jenkins: 
-  url: ""
-  username: ""
-  password: ""
-
-argocd:
-  url: ""
-  token: ""

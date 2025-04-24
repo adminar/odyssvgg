@@ -1,46 +1,54 @@
+
 services:
   odyssey:
-    networks:
-        - odyssey
-    image: odyssey:v1.0.0
     container_name: odyssey
+    image: odyssey:v1.0.0
     restart: unless-stopped
     privileged: true
     ports:
-      - '8000:8000'
-      - '8001:80'
+      - '8000:8000'  # 后端服务端口
+      - '8001:80'    # 可用于 nginx 或其他用途
     volumes:
       - ./log:/data/app/log
+    networks:
+      - odyssey
+    depends_on:
+      - odyssey_mysql
+      - odyssey_redis
+
   odyssey_mysql:
-    image: "mysql:8"
     container_name: odyssey_mysql
-    hostname: mysql
+    image: mysql:8
+    hostname: mysql  # 可内网通过 mysql 访问
     restart: always
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 1234
-    volumes:
-      - ./etc-mysql/my.cnf:/etc/my.cnf
-      - ./mysqldata:/var/lib/mysql/
-    networks:
-      - odyssey
     ports:
       - "3306:3306"
-  odyssey_redis:
-    image: "redis:latest"
-    container_name: odyssey_redis
-    hostname: redis
-    restart: always
+    volumes:
+      - ./etc-mysql/my.cnf:/etc/my.cnf     # 自定义配置（可选）
+      - ./mysqldata:/var/lib/mysql/        # 数据持久化
     networks:
       - odyssey
+
+  odyssey_redis:
+    container_name: odyssey_redis
+    image: redis:latest
+    hostname: redis
+    restart: always
     ports:
       - "6379:6379"
     volumes:
       - ./redisdata:/data
     command: ["redis-server", "--requirepass", "1234"]
+    networks:
+      - odyssey
+
 networks:
   odyssey:
     name: odyssey
+    driver: bridge
     ipam:
       config:
-        - subnet: 192.168.124.0/24
+        - subnet: 192.168.123.0/24

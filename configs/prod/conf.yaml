@@ -1,0 +1,26 @@
+server:
+  mode: "debug"
+  address: ":8000"
+  log_file_name: "log/odyssey.log"
+
+mysql:
+  dsn: "root:1234@tcp(172.25.0.94:3306)/ops_center?charset=utf8mb4&parseTime=True&loc=Local"
+
+redis:
+  address: "172.25.0.94:6379"
+  username: ""
+  password: "1234"
+  db: 0
+
+feishu:
+  app_id: ""
+  app_secret: ""
+
+jenkins: 
+  url: ""
+  username: ""
+  password: ""
+
+argocd:
+  url: ""
+  token: ""

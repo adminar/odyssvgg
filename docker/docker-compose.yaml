@@ -1,0 +1,46 @@
+services:
+  odyssey:
+    networks:
+        - odyssey
+    image: odyssey:v1.0.0
+    container_name: odyssey
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - '8000:8000'
+      - '8001:80'
+    volumes:
+      - ./log:/data/app/log
+  odyssey_mysql:
+    image: "mysql:8"
+    container_name: odyssey_mysql
+    hostname: mysql
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./etc-mysql/my.cnf:/etc/my.cnf
+      - ./mysqldata:/var/lib/mysql/
+    networks:
+      - odyssey
+    ports:
+      - "3306:3306"
+  odyssey_redis:
+    image: "redis:latest"
+    container_name: odyssey_redis
+    hostname: redis
+    restart: always
+    networks:
+      - odyssey
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redisdata:/data
+    command: ["redis-server", "--requirepass", "1234"]
+networks:
+  odyssey:
+    name: odyssey
+    ipam:
+      config:
+        - subnet: 192.168.124.0/24

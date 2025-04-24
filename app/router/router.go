@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/Riyoukou/odyssey/app/controller/cicd"
 	"github.com/Riyoukou/odyssey/app/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -21,4 +22,11 @@ func SetupRouter(r *gin.Engine) {
 		})
 	})
 
+	_cicd := r.Group("/cicd")
+	{
+		_cicd.GET("fetch/:type", cicd.HandleCICDFetchRepo)
+		_cicd.GET("get/:type/:id", cicd.HandleCICDGetRepo)
+		_cicd.POST("create/:type", cicd.HandleCICDCreateRepo)
+		_cicd.GET("delete/:type/:id", cicd.HandleCICDDeleteRepo)
+	}
 }

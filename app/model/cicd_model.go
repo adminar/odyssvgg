@@ -1,7 +1,11 @@
 package model
 
+import (
+	"gorm.io/datatypes"
+)
+
 // repository_model
-type Cluster struct {
+type ClusterTable struct {
 	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	APIServer   string `json:"api_server"`
@@ -11,6 +15,17 @@ type Cluster struct {
 	Description string `json:"description"`
 }
 
-func (Cluster) TableName() string {
+func (ClusterTable) TableName() string {
 	return "clusters"
+}
+
+type ProjectsTable struct {
+	ID       int64          `json:"id"`
+	Name     string         `json:"name"`
+	Env      string         `json:"env"`
+	Clusters datatypes.JSON `json:"clusters"`
+}
+
+func (ProjectsTable) TableName() string {
+	return "projects"
 }

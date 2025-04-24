@@ -5,7 +5,9 @@
         <collapse/>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+          <navigation />
+        </el-header>
         <el-main>
           <router-view />
         </el-main>
@@ -17,5 +19,5 @@
 
 <script setup lang="ts">
 import collapse from '@/layout/collapse/collapse.vue';
-import header from '@/layout/header/header.vue';
+import navigation from '@/layout/navigation/navigation.vue';
 </script>

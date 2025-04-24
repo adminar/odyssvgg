@@ -4,10 +4,10 @@ server:
   log_file_name: "log/odyssey.log"
 
 mysql:
-  dsn: "root:1234@tcp(172.25.0.94:3306)/ops_center?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:1234@tcp(127.0.0.1:3306)/ops_center?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
-  address: "172.25.0.94:6379"
+  address: "127.0.0.1:6379"
   username: ""
   password: ""
   db: 0

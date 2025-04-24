@@ -1,3 +1,33 @@
+# BE
 log
 *.log
 sql_samples
+
+# FE
+# Logs
+web/logs
+web/*.log
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/pnpm-debug.log*
+web/lerna-debug.log*
+
+web/node_modules
+web/dist
+web/dist.zip
+web/dist.7z
+web/dist-ssr
+web/*.local
+
+# Editor directories and files
+web/.vscode/*
+!web/.vscode/extensions.json
+!web/.vscode/settings.json
+web/.idea
+web/.DS_Store
+web/*.suo
+web/*.ntvs*
+web/*.njsproj
+web/*.sln
+web/*.sw?

@@ -1,6 +1,6 @@
 server:
   mode: "release"
-  address: ":8000"
+  address: "0.0.0.0:8000"
   log_file_name: "log/odyssey.log"
 
 mysql:

@@ -1,36 +1,47 @@
-
 services:
   odyssey:
     container_name: odyssey
-    image: odyssey:v1.0.0
+    build:
+      context: ..
+      dockerfile: Dockerfile
     restart: unless-stopped
     privileged: true
     ports:
       - '8000:8000'  # 后端服务端口
-      - '8001:80'    # 可用于 nginx 或其他用途
+      - '8001:80'    # 如果有前端或 nginx 页面可映射
     volumes:
-      - ./log:/data/app/log
+      - ../log:/data/app/log
     networks:
       - odyssey
     depends_on:
-      - odyssey_mysql
-      - odyssey_redis
+      odyssey_mysql:
+        condition: service_healthy
+      odyssey_redis:
+        condition: service_started
+    environment:
+      - GO_ENV=dev
 
   odyssey_mysql:
     container_name: odyssey_mysql
     image: mysql:8
-    hostname: mysql  # 可内网通过 mysql 访问
+    hostname: mysql
     restart: always
     environment:
-      TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 1234
     ports:
       - "3306:3306"
     volumes:
-      - ./etc-mysql/my.cnf:/etc/my.cnf     # 自定义配置（可选）
-      - ./mysqldata:/var/lib/mysql/        # 数据持久化
+      - ../mysqldata:/var/lib/mysql/
+      - ../init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - odyssey
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
 
   odyssey_redis:
     container_name: odyssey_redis
@@ -40,10 +51,15 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./redisdata:/data
+      - ../redisdata:/data
     command: ["redis-server", "--requirepass", "1234"]
     networks:
       - odyssey
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 networks:
   odyssey:

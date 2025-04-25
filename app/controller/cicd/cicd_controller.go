@@ -8,7 +8,6 @@ import (
 
 	"github.com/Riyoukou/odyssey/app/model"
 	"github.com/Riyoukou/odyssey/app/repository"
-	"github.com/Riyoukou/odyssey/pkg/logger"
 	"github.com/Riyoukou/odyssey/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -213,37 +212,4 @@ func HandleCICDDeleteRepo(c *gin.Context) {
 		return
 	}
 	response.Success(c, nil, fmt.Sprintf("%s deleted successfully", c.Param("type")))
-}
-
-func HandleCICDBuildByJenkins(c *gin.Context) {
-	buildRecordID, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		logger.Errorf("解析构建记录 ID 失败: %v", err)
-	}
-	buildRecord, err := repository.GetBuildRecordByID(buildRecordID)
-	if err != nil {
-		logger.Errorf("获取构建记录失败: %v", err)
-	}
-
-	if buildRecord.Status != "Pending" {
-		response.Success(c, http.StatusBadRequest, "ERROR STATUS")
-		return
-	}
-
-	buildRecord.Status = "Building" // 更新数据库
-	err = repository.UpdateBuildRecord(*buildRecord)
-	if err != nil {
-		logger.Errorf("更新构建记录失败: %v", err)
-	}
-
-	go func() {
-		_, err := service.CICDBuildByJenkins(*buildRecord)
-		if err != nil {
-			logger.Errorf("构建失败: %v", err)
-			return
-		}
-	}()
-
-	response.Success(c, nil, "BUILD BY JENKINS SUCCESS")
-
 }

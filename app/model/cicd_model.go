@@ -19,13 +19,30 @@ func (ClusterTable) TableName() string {
 	return "clusters"
 }
 
-type ProjectsTable struct {
+type ProjectTable struct {
 	ID       int64          `json:"id"`
 	Name     string         `json:"name"`
-	Env      string         `json:"env"`
+	Env      datatypes.JSON `json:"env"`
 	Clusters datatypes.JSON `json:"clusters"`
 }
 
-func (ProjectsTable) TableName() string {
+func (ProjectTable) TableName() string {
 	return "projects"
+}
+
+type EnvTable struct {
+	ID           int64          `json:"id"`
+	Name         string         `json:"name"`
+	ProjectName  string         `json:"project_name"`
+	Type         string         `json:"type"`
+	NamespaceMap datatypes.JSON `json:"namespace_map"`
+}
+
+type NamespaceMap struct {
+	Cluster   string `json:"cluster"`
+	Namespace string `json:"namespace"`
+}
+
+func (EnvTable) TableName() string {
+	return "envs"
 }

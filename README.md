@@ -1,9 +1,9 @@
 # odyssey
 GO + VUE3编写的运维平台
 
-GO:使用GOGIN框架
+后端:使用GOGIN框架
 
-VUE3:使用开源框架SnowAdmin(http://101.126.93.137:81/)
+VUE3:使用Vue3+TypeScript+Vite
 
 预期实现功能CI/CD、资产管理、工单系统
 

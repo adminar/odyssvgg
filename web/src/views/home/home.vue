@@ -1,6 +1,8 @@
 <template>
   <div class="flex-center">
-    <h1>首页</h1>
+    <h1>welcome to odyssey</h1>
   </div>
 </template>
-<script setup></script>
+<script setup lang="ts">
+
+</script>

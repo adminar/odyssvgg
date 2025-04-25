@@ -26,4 +26,4 @@ import useUserStore from '@/stores/useUserStore'
 const userStore = useUserStore()
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped></style>

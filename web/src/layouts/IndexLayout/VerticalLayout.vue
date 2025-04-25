@@ -5,7 +5,7 @@
         <div
           class="border-b font-bold text-p whitespace-nowrap text-center h-[45px] leading-[45px]"
         >
-          {{ appStore.menuCollapse ? 'Ag' : 'Ag Admin' }}
+          {{ appStore.menuCollapse ? 'odyssey' : 'odyssey' }}
         </div>
         <AgelMenu
           :menus="userStore.menuData"

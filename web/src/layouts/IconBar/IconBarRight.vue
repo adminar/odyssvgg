@@ -14,4 +14,4 @@ import IconUser from './IconUser.vue'
 import IconOperation from './IconOperation.vue'
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped></style>

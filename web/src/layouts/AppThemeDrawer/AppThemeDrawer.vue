@@ -144,12 +144,25 @@ const predefineColors = [
 ]
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .layout-box {
-  @apply border h-20 cursor-pointer rounded shadow overflow-hidden p-1.5 bg-white;
+  border: 1px solid;
+  height: 5rem; /* 20px -> 5rem */
+  cursor: pointer;
+  border-radius: 0.375rem; /* 0.375rem is equivalent to `rounded` */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Default shadow */
+  overflow: hidden;
+  padding: 0.375rem; /* 1.5px -> 0.375rem */
+  background-color: white;
 }
 
 .layout-box .main {
-  @apply bg-[var(--el-color-primary-light-8)] flex justify-end items-end p-1 rounded-sm border border-dashed border-[var(--el-color-primary)];
+  background-color: var(--el-color-primary-light-8);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 0.25rem; /* Adjusted padding */
+  border-radius: 0.125rem; /* rounded-sm */
+  border: 1px dashed var(--el-color-primary);
 }
 </style>

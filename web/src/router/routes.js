@@ -99,16 +99,6 @@ export const dynamicRoutes = [
           link: 'https://element-plus.org/zh-CN/'
         },
         component: () => import('@/layouts/IframeLayout/IframeLayout.vue')
-      },
-      {
-        path: '/link/element-plus-crx',
-        name: 'element-plus-crx',
-        meta: {
-          title: 'element-plus-crx',
-          icon: 'ElementPlus',
-          link: 'https://agrass.gitee.io/element-plus-crx/'
-        },
-        component: () => import('@/layouts/IframeLayout/IframeLayout.vue')
       }
     ]
   },

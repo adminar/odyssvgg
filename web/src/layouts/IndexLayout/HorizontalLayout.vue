@@ -1,7 +1,7 @@
 <template>
   <ElContainer class="h-full overflow-hidden">
     <ElHeader height="45px" class="border-b flex items-center justify-between">
-      <div class="border py-1 px-2 bg-p text-white rounded-lg whitespace-nowrap">Ag Admin</div>
+      <div class="border py-1 px-2 bg-p text-white rounded-lg whitespace-nowrap">odyssey</div>
       <AgelMenu
         :menus="userStore.menuData"
         router

@@ -125,6 +125,59 @@ func UpdateProject(project model.ProjectTable) error {
 	return nil
 }
 
+// cicd_env
+func FetchEnvsByProject(projectName string) ([]model.EnvTable, error) {
+	var envs []model.EnvTable
+	if err := DB.Find(&envs, "project_name = ?", projectName).Error; err != nil {
+		logger.Errorf("Failed to fetch envs: %v", err)
+		return nil, err
+	}
+
+	return envs, nil
+}
+
+func CreateEnv(env model.EnvTable) error {
+	if err := DB.Where("name = ? AND project_name = ?", env.Name, env.ProjectName).
+		First(&model.EnvTable{}).Error; err == nil {
+		logger.Errorf("Env already exists: name=%s project_name=%s", env.Name, env.ProjectName)
+		return err
+	}
+
+	if err := DB.Create(&env).Error; err != nil {
+		logger.Errorf("Failed to create env: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func DeleteEnv(envID int64) error {
+	if err := DB.Delete(&model.EnvTable{}, envID).Error; err != nil {
+		logger.Errorf("Failed to delete env: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func GetEnvByNameAndProject(name, projectName string) (model.EnvTable, error) {
+	var env model.EnvTable
+	if err := DB.Where("name = ? AND project_name = ?", name, projectName).
+		First(&env).Error; err != nil {
+		return model.EnvTable{}, err
+	}
+
+	return env, nil
+}
+
+func UpdateEnvByNameAndProject(env model.EnvTable) error {
+	if err := DB.Model(&model.EnvTable{}).Where("name = ? AND project_name = ?", env.Name, env.ProjectName).Updates(env).Error; err != nil {
+		logger.Errorf("Failed to update env: %v", err)
+		return err
+	}
+	return nil
+}
+
 // cicd_service
 func FetchServicesByProjectAndEnv(projectName, envName string) ([]model.ServiceTable, error) {
 	var services []model.ServiceTable
@@ -286,6 +339,150 @@ func UpdateCodeSourceByName(codeSource model.CodeSourceTable) error {
 	if err := DB.Model(&model.CodeSourceTable{}).Where("name = ?", codeSource.Name).Updates(codeSource).Error; err != nil {
 		logger.Errorf("Failed to update code source: %v", err)
 		return err
+	}
+
+	return nil
+}
+
+// cicd_build_record
+func FetchBuildRecordsByProjectName(projectName string) ([]model.BuildRecord, error) {
+	var records []model.BuildRecord
+	if err := DB.Where("project_name = ?", projectName).Find(&records).Error; err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
+func CreateBuildRecord(buildRecord model.BuildRecord) error {
+	if err := DB.Create(&buildRecord).Error; err != nil {
+		return fmt.Errorf("failed to create build record: %w", err)
+	}
+	return nil
+}
+
+func GetBuildRecordByID(id int64) (*model.BuildRecord, error) {
+	var record model.BuildRecord
+	if err := DB.Where("id = ?", id).First(&record).Error; err != nil {
+		return nil, err
+	}
+
+	return &record, nil
+}
+
+func GetBuildRecordByName(name string) (*model.BuildRecord, error) {
+	var record model.BuildRecord
+	if err := DB.Where("name = ?", name).First(&record).Error; err != nil {
+		return nil, err
+	}
+
+	return &record, nil
+}
+
+func DeleteBuildRecord(id int64) error {
+	if err := DB.Delete(&model.BuildRecord{}, id).Error; err != nil {
+		return fmt.Errorf("failed to delete build record: %w", err)
+	}
+
+	return nil
+}
+
+func UpdateBuildRecord(buildRecord model.BuildRecord) error {
+	if err := DB.Model(&model.BuildRecord{}).Where("id = ?", buildRecord.ID).Updates(buildRecord).Error; err != nil {
+		return fmt.Errorf("failed to update build record: %w", err)
+	}
+
+	return nil
+}
+
+// cicd_build_service_record
+func GetBuildServiceRecordsByBuildRecordName(buildRecordName string) ([]model.BuildServiceRecord, error) {
+	var records []model.BuildServiceRecord
+	if err := DB.Where("build_record_name = ?", buildRecordName).Find(&records).Error; err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
+func CreateBuildServiceRecord(buildServiceRecord model.BuildServiceRecord) error {
+	if err := DB.Create(&buildServiceRecord).Error; err != nil {
+		return fmt.Errorf("failed to create build service record: %w", err)
+	}
+	return nil
+}
+
+func UpdateBuildServiceRecord(buildServiceRecord model.BuildServiceRecord) error {
+	if err := DB.Model(&model.BuildServiceRecord{}).Where("id = ?", buildServiceRecord.ID).Updates(buildServiceRecord).Error; err != nil {
+		return fmt.Errorf("failed to update build service record: %w", err)
+	}
+	return nil
+}
+
+// cicd_deploy_record
+func FetchDeployRecordsByProjectName(projectName string) ([]model.DeployRecord, error) {
+	var records []model.DeployRecord
+	if err := DB.Where("project_name = ?", projectName).Find(&records).Error; err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
+func CreateDeployRecord(deployRecord model.DeployRecord) error {
+	if err := DB.Create(&deployRecord).Error; err != nil {
+		return fmt.Errorf("failed to create deploy record: %w", err)
+	}
+	return nil
+}
+
+func GetDeployRecordByID(id int64) (*model.DeployRecord, error) {
+	var record model.DeployRecord
+	if err := DB.Where("id = ?", id).First(&record).Error; err != nil {
+		return nil, err
+	}
+
+	return &record, nil
+}
+
+func GetDeployRecordByName(name string) (*model.DeployRecord, error) {
+	var record model.DeployRecord
+	if err := DB.Where("name = ?", name).First(&record).Error; err != nil {
+		return nil, err
+	}
+
+	return &record, nil
+}
+
+func GetDeployRecordByBuildRecordName(name string) (*model.DeployRecord, error) {
+	var record model.DeployRecord
+	if err := DB.Where("build_record_name = ?", name).First(&record).Error; err != nil {
+		return nil, err
+	}
+
+	return &record, nil
+}
+
+// cicd_deploy_service_record
+func CreateDeployServiceRecord(deployServiceRecord model.DeployServiceRecord) error {
+	if err := DB.Create(&deployServiceRecord).Error; err != nil {
+		return fmt.Errorf("failed to create deploy service record: %w", err)
+	}
+	return nil
+}
+
+func GetDeployServiceRecordsByDeployRecordName(deployRecordName string) ([]model.DeployServiceRecord, error) {
+	var records []model.DeployServiceRecord
+	if err := DB.Where("deploy_record_name = ?", deployRecordName).Find(&records).Error; err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
+func UpdateDeployServiceRecordsByID(id int64, deployServiceRecord model.DeployServiceRecord) error {
+	if err := DB.Model(&model.DeployServiceRecord{}).Where("id = ?", id).Updates(deployServiceRecord).Error; err != nil {
+		return fmt.Errorf("failed to update deploy service record: %w", err)
 	}
 
 	return nil

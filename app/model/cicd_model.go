@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	"gorm.io/datatypes"
 )
 
@@ -31,16 +33,11 @@ func (ProjectTable) TableName() string {
 }
 
 type EnvTable struct {
-	ID           int64          `json:"id"`
-	Name         string         `json:"name"`
-	ProjectName  string         `json:"project_name"`
-	Type         string         `json:"type"`
-	NamespaceMap datatypes.JSON `json:"namespace_map"`
-}
-
-type NamespaceMap struct {
-	Cluster   string `json:"cluster"`
-	Namespace string `json:"namespace"`
+	ID          int64  `json:"id"`
+	Name        string `json:"name"`
+	ProjectName string `json:"project_name"`
+	Type        string `json:"type"`
+	Namespace   string `json:"namespace"`
 }
 
 func (EnvTable) TableName() string {
@@ -82,4 +79,85 @@ type CodeSourceTable struct {
 
 func (CodeSourceTable) TableName() string {
 	return "code_sources"
+}
+
+type BuildRecord struct {
+	ID          int64     `json:"id"`
+	Name        string    `json:"name"`
+	Env         string    `json:"env"`
+	Tag         string    `json:"tag"`
+	Status      string    `json:"status"`
+	ProjectName string    `json:"project_name"`
+	BuildUser   string    `json:"build_user"`
+	CreatedAt   time.Time `json:"created_at"`
+	Description string    `json:"description"`
+}
+
+func (BuildRecord) TableName() string {
+	return "build_records"
+}
+
+type ApiBuildRecord struct {
+	Describe    string                      `json:"describe"`
+	Env         string                      `json:"env"`
+	ProjectName string                      `json:"project_name"`
+	Services    []ApiCICDBuildRecordService `json:"services"`
+	Tag         string                      `json:"tag"`
+	BuildUser   string                      `json:"build_user"`
+	Name        string                      `json:"name"`
+}
+
+type ApiCICDBuildRecordService struct {
+	ServiceName string `json:"service_name"`
+	Branch      string `json:"branch"`
+}
+
+type BuildServiceRecord struct {
+	ID              int64  `json:"id"`
+	ServiceName     string `json:"service_name"`
+	ProjectName     string `json:"project_name"`
+	Env             string `json:"env"`
+	Image           string `json:"image"`
+	BuildRecordName string `json:"build_record_name"`
+	BuildURL        string `json:"build_url"`
+	Status          string `json:"status"`
+	Branch          string `json:"branch"`
+	BuildID         int64  `json:"build_id"`
+}
+
+func (BuildServiceRecord) TableName() string {
+	return "build_service_records"
+}
+
+type DeployRecord struct {
+	ID              int64     `json:"id"`
+	Name            string    `json:"name"`
+	Env             string    `json:"env"`
+	ProjectName     string    `json:"project_name"`
+	DeployUser      string    `json:"deploy_user"`
+	BuildRecordName string    `json:"build_record_name"`
+	Status          string    `json:"status"`
+	Tag             string    `json:"tag"`
+	ClusterNames    string    `json:"cluster_names"`
+	CreatedAt       time.Time `json:"created_at"`
+	Description     string    `json:"description"`
+}
+
+func (DeployRecord) TableName() string {
+	return "deploy_records"
+}
+
+type DeployServiceRecord struct {
+	ID               int64  `json:"id"`
+	ServiceName      string `json:"service_name"`
+	ProjectName      string `json:"project_name"`
+	Env              string `json:"env"`
+	DeployRecordName string `json:"deploy_record_name"`
+	ClusterName      string `json:"cluster_name"`
+	Status           string `json:"status"`
+	Image            string `json:"image"`
+}
+
+func (DeployServiceRecord) TableName() string {
+	return "deploy_service_records"
 }

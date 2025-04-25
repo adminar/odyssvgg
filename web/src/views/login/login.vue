@@ -3,18 +3,18 @@
     <div
       class="border border-gray-200 w-96 p-10 shadow-blue-200 shadow-md bg-white rounded-md dark:bg-[var(--el-bg-color)] dark:shadow-blue-700 dark:border-blue-900"
     >
-      <div class="text-center text-2xl text-p mb-2">AG Admin</div>
-      <div class="text-gray-400 text-sm text-center">Vue3 + Pinna + VueUse + UnoCss + ElementPlusCrx</div>
+      <div class="text-center text-2xl text-p mb-2">odyssey</div>
+      <div class="text-gray-400 text-sm text-center">Please input account and password to login</div>
       <ElForm ref="elFormRef" :model="form.data" :rules="form.rules" class="mt-8" label-position="top">
         <ElFormItem prop="account">
-          <ElInput v-model="form.data.account" placeholder="Please input account" @keydown="keydown($event)"></ElInput>
+          <ElInput v-model="form.data.account" placeholder="Please input account" @keydown.enter="submit"></ElInput>
         </ElFormItem>
         <ElFormItem prop="password">
           <ElInput
             v-model="form.data.password"
             placeholder="Please input password"
             type="password"
-            @keydown="keydown($event)"
+            @keydown.enter="submit"
           ></ElInput>
         </ElFormItem>
       </ElForm>
@@ -46,10 +46,6 @@ const form = reactive({
 const elFormRef = ref(null)
 const userStore = useUserStore()
 const router = useRouter()
-
-function keydown(e) {
-  if (e.key === 'Enter') submit()
-}
 
 async function submit() {
   await elFormRef.value?.validate()

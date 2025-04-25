@@ -16,9 +16,9 @@ func SetupRouter(r *gin.Engine) {
 	)
 
 	// 健康检查
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/man", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": "what can i say! mamba out!",
 		})
 	})
 

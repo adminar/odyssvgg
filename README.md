@@ -9,6 +9,8 @@ VUE3:使用Vue3+TypeScript+Vite
 ##后端调试
 go mod tidy
 GO_ENV=dev go run cmd/server/main.go
+##启动后端后尝试
+curl 127.0.0.1:8000/man
 ##前端调试
 pnpm install
 cd web && npm run dev

@@ -31,6 +31,7 @@ function loginUser() {
       ElMessage.success('切换用户角色成功')
     })
 }
+
 </script>
 
 <style scoped></style>

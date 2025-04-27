@@ -46,7 +46,6 @@ const form = reactive({
 const elFormRef = ref(null)
 const userStore = useUserStore()
 const router = useRouter()
-
 async function submit() {
   await elFormRef.value?.validate()
   form.loading = true
@@ -58,5 +57,6 @@ async function submit() {
     .catch(() => {
       form.loading = false
     })
+  console.log(userStore)
 }
 </script>

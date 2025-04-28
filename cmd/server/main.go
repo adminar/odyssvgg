@@ -22,8 +22,6 @@ func main() {
 	if err := logger.InitLogger(viper.GetString("server.log_file_name")); err != nil {
 		log.Fatalf("Error initializing logger: %v", err)
 	}
-	// 初始化数据库
-	repository.Init()
 
 	// 设置运行模式
 	gin.SetMode(viper.GetString("server.mode"))
@@ -34,13 +32,18 @@ func main() {
 	// 注册路由
 	setupRouter(r)
 
-	go cron.CronGeneratedRegister()
-
 	// 启动服务器
 	address := viper.GetString("server.address")
 	if err := r.Run(address); err != nil {
 		log.Fatalf("启动服务器失败: %v", err)
 	}
+
+	go func() {
+		// 初始化数据库
+		repository.Init()
+		// 启动定时任务
+		cron.CronGeneratedRegister()
+	}()
 }
 
 func initConfig() error {

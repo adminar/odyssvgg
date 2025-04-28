@@ -9,8 +9,8 @@ VUE3:使用Vue3+TypeScript+Vite
 ```
 ##数据库准备，导入initsql中的表结构，启动一个mysql和redis(如下配置无需更改dev配置文件)
 vim /etc/host/
-xx.xx.xx.xx odyssey.mysql ##改为自己数据库的地址
-xx.xx.xx.xx odyssey.redis ##改为自己数据库的地址
+127.0.0.1 odyssey.mysql ##127.0.0.1改为自己数据库的地址
+127.0.0.1 odyssey.redis ##127.0.0.1改为自己数据库的地址
 ##后端调试
 go mod tidy
 GO_ENV=dev go run cmd/server/main.go

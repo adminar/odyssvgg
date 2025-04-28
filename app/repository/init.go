@@ -16,11 +16,11 @@ var (
 )
 
 func Init() {
-	initRedis()
+	//initRedis()
 	initMysql()
 }
 
-func initRedis() {
+/*func initRedis() {
 	RedisClient = redis.NewClient(&redis.Options{
 		Addr:     viper.GetString("redis.address"),
 		Password: viper.GetString("redis.password"),
@@ -30,7 +30,7 @@ func initRedis() {
 		panic(err)
 	}
 	log.Println("Redis connected successfully to", viper.GetString("redis.address"))
-}
+}*/
 
 func initMysql() {
 	DB, err = gorm.Open(mysql.Open(viper.GetString("mysql.dsn")),

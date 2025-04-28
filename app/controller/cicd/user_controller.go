@@ -1,7 +1,6 @@
 package cicd
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Riyoukou/odyssey/app/model"
@@ -26,8 +25,6 @@ func HandleUserLogin(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
-
-	fmt.Println(userInfo)
 
 	response.Success(c, map[string]interface{}{
 		"id":    userInfo.ID,

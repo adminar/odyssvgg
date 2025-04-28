@@ -23,6 +23,15 @@ export const dynamicRoutes = [
     component: () => import('@/views/table/baseTable.vue')
   },
   {
+    path: '/clusterTable',
+    name: 'clusterTable',
+    meta: {
+      title: '集群列表',
+      icon: 'Menu'
+    },
+    component: () => import('@/views/cluster-table/cluster-table.vue')
+  },
+  {
     path: '/cacheView',
     name: 'cacheView',
     meta: {

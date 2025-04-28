@@ -4,15 +4,14 @@
     <div class="table-bar flex justify-between items-center mb-3">
       <div>
         <ElButton icon="Plus" @click="form.toAdd">新增</ElButton>
-        <!--<ElButton icon="Delete" @click="table.delete(form.model)">删除</ElButton>-->
+        <ElButton icon="Delete" @click="deleteSelected">删除</ElButton>
       </div>
       <div>
         <ElButton icon="Refresh" round @click="table.request"></ElButton>
-        <ElButton icon="Search" round @click="search.show = !search.show"></ElButton>
       </div>
     </div>
     <!-- 列表 -->
-    <AgelTable class="flex-1" v-bind="table"> </AgelTable>
+    <AgelTable class="flex-1" v-bind="table" @selection-change="handleSelectionChange"> </AgelTable>
     <!-- 弹窗表单 -->
     <ElDialog v-model="form.show" :title="form.title" width="800px" top="10vh">
       <ElForm :ref="(v) => (form.ref = v)" :model="form.model" label-width="80px">
@@ -33,6 +32,8 @@
 import { reactive, ref, nextTick } from 'vue'
 import http from '@/api'
 import yaml from 'js-yaml'
+
+const selectedRows = ref([]) // 用来保存选中的行
 
 const form = reactive({
   test: false,
@@ -154,13 +155,28 @@ const table = reactive({
   },
   delete: (form) => {
     table.loading = true
-    console.log(form)
     http.delete(import.meta.env.VITE_APP_BASE_URL + `/cicd/delete/repo/cluster/${form.id}`).then((res) => {
       table.loading = false
       table.request()
     })
   }
 })
+
+// 获取选中的行
+function handleSelectionChange(selected) {
+  selectedRows.value = selected
+}
+
+// 删除选中的行
+function deleteSelected() {
+  if (selectedRows.value.length === 0) {
+    return alert('请选择至少一行进行删除！')
+  }
+
+  selectedRows.value.forEach(row => {
+    table.delete(row)  // 调用 delete 方法删除每一行
+  })
+}
 
 table.request()
 </script>

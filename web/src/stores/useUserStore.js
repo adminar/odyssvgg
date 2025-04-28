@@ -26,7 +26,6 @@ export default defineStore('userStore', () => {
     return {
       name: "",
       id: "",
-      portrait: "",
       token: "",
       role: "",
     }
@@ -34,12 +33,12 @@ export default defineStore('userStore', () => {
 
   function loginApp(data) {
     return http({
-      url: "/mock/login",
+      url: "http://127.0.0.1:8000/user/login",
       method: 'post',
       data: data
     }).then((res) => {
-      userInfo.value = res.data
-      return res.data
+      userInfo.value = res.result
+      return res
     })
   }
 

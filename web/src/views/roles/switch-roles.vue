@@ -13,8 +13,8 @@ const userStore = useUserStore()
 function loginAdmin() {
   userStore
     .loginApp({
-      account: 'admin',
-      password: '123456'
+      name: 'admin',
+      password: '123'
     })
     .then(() => {
       ElMessage.success('切换管理员角色成功')
@@ -24,13 +24,14 @@ function loginAdmin() {
 function loginUser() {
   userStore
     .loginApp({
-      account: 'user',
-      password: '123456'
+      name: 'user',
+      password: '123'
     })
     .then(() => {
       ElMessage.success('切换用户角色成功')
     })
 }
+
 </script>
 
 <style scoped></style>

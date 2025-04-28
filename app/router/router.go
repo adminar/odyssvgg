@@ -22,6 +22,11 @@ func SetupRouter(r *gin.Engine) {
 		})
 	})
 
+	_user := r.Group("/user")
+	{
+		_user.POST("login", cicd.HandleUserLogin)
+	}
+
 	_cicd := r.Group("/cicd")
 	{
 		_cicd.GET("fetch/repo/:type", cicd.HandleCICDFetchRepo)

@@ -32,18 +32,17 @@ func main() {
 	// 注册路由
 	setupRouter(r)
 
+	// 初始化数据库
+	repository.Init()
+
+	// 启动定时任务
+	cron.CronGeneratedRegister()
+
 	// 启动服务器
 	address := viper.GetString("server.address")
 	if err := r.Run(address); err != nil {
 		log.Fatalf("启动服务器失败: %v", err)
 	}
-
-	go func() {
-		// 初始化数据库
-		repository.Init()
-		// 启动定时任务
-		cron.CronGeneratedRegister()
-	}()
 }
 
 func initConfig() error {

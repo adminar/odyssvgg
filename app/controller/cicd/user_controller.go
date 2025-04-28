@@ -36,3 +36,19 @@ func HandleUserLogin(c *gin.Context) {
 		"role":  userInfo.Role,
 	}, "登录成功")
 }
+
+func HandleUserRegister(c *gin.Context) {
+	var req model.UserTable
+	err := c.ShouldBind(&req)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, err)
+		return
+	}
+	err = repository.UserRegister(req.Name, req.Password, req.Email, req.Phone)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, err)
+		logger.Error(err)
+		return
+	}
+	response.Success(c, nil, "注册成功")
+}

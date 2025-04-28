@@ -4,8 +4,9 @@ import { useStorage } from '@vueuse/core'
 import { dynamicRoutes } from "@/router/routes"
 import http from "@/api"
 
-export default defineStore('userStore', () => {
 
+export default defineStore('userStore', () => {
+  const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL
   const userInfo = useStorage('userInfo', getInitUserInfo(), sessionStorage)
 
   const token = computed(() => {
@@ -33,7 +34,7 @@ export default defineStore('userStore', () => {
 
   function loginApp(data) {
     return http({
-      url: "http://127.0.0.1:8000/user/login",
+      url: `http://${{API_BASE_URL}}/user/login`,
       method: 'post',
       data: data
     }).then((res) => {
@@ -44,7 +45,7 @@ export default defineStore('userStore', () => {
 
   function registerApp(data) {
     return http({
-      url: "http://127.0.0.1:8000/user/register",
+      url: `http://${{API_BASE_URL}}/user/register`,
       method: 'post',
       data: data
     }).then((res) => {

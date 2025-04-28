@@ -36,7 +36,6 @@ Mock.mock('/mock/login', 'post', (req) => {
     decs: Mock.mock('@cparagraph'),
     date: Mock.mock('@date(yyyy-MM-dd)'),
     token: 'xxxxxxxxtoken',
-    portrait: 'http://dummyimage.com/200x200/333333/ffffff&text=' + query.account
   }
   if (['admin', 'user'].includes(query.account)) {
     return { success: true, msg: '', data: userInfo }

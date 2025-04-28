@@ -19,7 +19,6 @@ http.interceptors.response.use((response) => {
     data.message && ElMessage.error(data.message)
     return Promise.reject(data)
   }
-  console.log(data)
   return data
 })
 

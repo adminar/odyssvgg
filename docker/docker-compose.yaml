@@ -1,15 +1,22 @@
 services:
-  odyssey:
-    container_name: odyssey
+  odyssey_dev:
+    container_name: odyssey_dev
     build:
       context: ..
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date +%Y%m%d_%H%M%S)}
     restart: unless-stopped
     privileged: true
+    extra_hosts:
+      - "odyssey.mysql:192.168.123.3"
+      - "odyssey.redis:192.168.123.2"
     ports:
-      - '8000:8000'  # 后端服务端口
-      - '8001:80'    # 如果有前端或 nginx 页面可映射
+      - '8001:8001'  # 开发环境后端
+      - '8080:80'    # 如果你需要前端调试，可以用 8080 映射到容器的 80
+      - '8000:8000'  # 生产环境使用 8000 端口
     volumes:
+      - ../:/app
       - ../log:/data/app/log
     networks:
       - odyssey
@@ -20,6 +27,34 @@ services:
         condition: service_started
     environment:
       - GO_ENV=dev
+    command: go run cmd/server/main.go
+
+  odyssey:
+    container_name: odyssey
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date +%Y%m%d_%H%M%S)}
+    restart: unless-stopped
+    privileged: true
+    extra_hosts:
+      - "odyssey.mysql:192.168.123.3"
+      - "odyssey.redis:192.168.123.2"
+    ports:
+      - '8000:8000'  # 生产环境后端
+      - '80:80'      # 生产环境前端
+    volumes:
+      - ../log:/data/app/log
+    networks:
+      - odyssey
+    depends_on:
+      odyssey_mysql:
+        condition: service_healthy
+      odyssey_redis:
+        condition: service_started
+    environment:
+      - GO_ENV=prod
 
   odyssey_mysql:
     container_name: odyssey_mysql

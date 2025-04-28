@@ -1,6 +1,10 @@
 # === 阶段 1：构建后端 Go 应用 ===
 FROM golang:1.24-alpine AS backend-builder
 
+# 添加构建参数
+ARG BUILD_DATE
+ENV BUILD_DATE=$BUILD_DATE
+
 WORKDIR /app
 
 COPY go.mod go.sum ./

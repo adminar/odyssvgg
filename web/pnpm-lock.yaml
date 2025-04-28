@@ -23,6 +23,9 @@ importers:
       element-plus-crx:
         specifier: 1.1.4
         version: 1.1.4
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       pinia:
         specifier: ^2.3.1
         version: 2.3.1(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))

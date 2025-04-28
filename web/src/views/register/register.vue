@@ -3,8 +3,8 @@
     <div
       class="border border-gray-200 w-96 p-10 shadow-blue-200 shadow-md bg-white rounded-md dark:bg-[var(--el-bg-color)] dark:shadow-blue-700 dark:border-blue-900"
     >
-      <div class="text-center text-2xl text-p mb-2">odyssey</div>
-      <div class="text-gray-400 text-sm text-center">Please input name and password to login</div>
+      <div class="text-center text-2xl text-p mb-2">Register</div>
+      <div class="text-gray-400 text-sm text-center"> Please enter your name and password to register.</div>
       <ElForm ref="elFormRef" :model="form.data" :rules="form.rules" class="mt-8" label-position="top">
         <ElFormItem prop="name">
           <ElInput v-model="form.data.name" placeholder="Please input name" @keydown.enter="submit"></ElInput>
@@ -17,10 +17,20 @@
             @keydown.enter="submit"
           ></ElInput>
         </ElFormItem>
+        <ElFormItem prop="email">
+          <ElInput v-model="form.data.email" placeholder="Please input email" @keydown.enter="submit"></ElInput>
+        </ElFormItem>
+        <ElFormItem prop="phone">
+          <ElInput v-model="form.data.phone" placeholder="Please input phone" @keydown.enter="submit"></ElInput>
+        </ElFormItem>
       </ElForm>
       <div class="flex justify-center items-center mt-6">
         <ElButton :loading="form.loading" class="w-full" type="primary" @click="submit">Login</ElButton>
-        <ElButton :loading="form.loading" class="w-full" type="primary" @click="pushRegister">Register</ElButton>
+      </div>
+      <div class="flex justify-center items-center mt-4">
+        <span class="text-blue-500 cursor-pointer" @click="goBack">
+          返回
+        </span>
       </div>
     </div>
   </div>
@@ -29,18 +39,37 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import useUserStore from '@/stores/useUserStore'
-import { homeRoute } from '@/router/routes'
 import { useRouter } from 'vue-router'
 
 const form = reactive({
   loading: false,
   data: {
     name: '',
-    password: ''
+    password: '',
+    email: '',
+    phone: ''
   },
   rules: {
     name: { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    password: { required: true, message: 'Please input Activity password', trigger: 'blur' }
+    password: { required: true, message: 'Please input Activity password', trigger: 'blur' },
+    email: [
+      { required: true, message: 'Please input email', trigger: 'blur' },
+      { type: 'email', message: 'Please input valid email', trigger: ['blur'] }
+    ],
+    phone: [
+      { required: true, message: 'Please input phone', trigger: 'blur' },
+      {
+        validator: (rule, value, callback) => {
+          const phoneRegex = /^\d{11}$/
+          if (!phoneRegex.test(value)) {
+            callback(new Error('Please input valid 11-digit phone number'))
+          } else {
+            callback()
+          }
+        },
+        trigger: ['blur']
+      }  
+    ]
   }
 })
 
@@ -51,15 +80,16 @@ async function submit() {
   await elFormRef.value?.validate()
   form.loading = true
   userStore
-    .loginApp(form.data)
+    .registerApp(form.data)
     .then(() => {
-      router.push({ path: homeRoute.path })
+      router.push({ name: 'login' })
     })
     .catch(() => {
       form.loading = false
     })
 }
-function pushRegister() {
-  router.push({ name: 'register' })
+
+function goBack() {
+  router.push({ name: 'login' })
 }
 </script>

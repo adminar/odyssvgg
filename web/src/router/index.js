@@ -9,15 +9,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const whitlist = ['/login']
+  const whitelist = ['/login', '/register']  
   const meta = to.meta
   const userStore = useUserStore()
 
-  const isWhitlist = whitlist.includes(to.path)
+  const isWhitelist = whitelist.includes(to.path)
   const hasRole = meta.roles ? meta.roles.includes(userStore.role) : true
   const hasToken = userStore.token !== ''
 
-  if (!hasToken && !isWhitlist) {
+  if (!hasToken && !isWhitelist) {
     ElMessage.warning('请先登录后再操作')
     return '/login'
   }

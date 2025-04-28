@@ -42,6 +42,16 @@ export default defineStore('userStore', () => {
     })
   }
 
+  function registerApp(data) {
+    return http({
+      url: "http://127.0.0.1:8000/user/register",
+      method: 'post',
+      data: data
+    }).then((res) => {
+      return res
+    })
+  }
+
   function logoutApp() {
     return new Promise((reslove => {
       userInfo.value = getInitUserInfo()
@@ -74,6 +84,7 @@ export default defineStore('userStore', () => {
     token,
     role,
     loginApp,
+    registerApp,
     logoutApp
   }
 })

@@ -25,6 +25,7 @@ func SetupRouter(r *gin.Engine) {
 	_user := r.Group("/user")
 	{
 		_user.POST("login", cicd.HandleUserLogin)
+		_user.POST("register", cicd.HandleUserRegister)
 	}
 
 	_cicd := r.Group("/cicd")

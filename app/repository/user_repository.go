@@ -32,3 +32,32 @@ func UserLogin(name, password string) (*model.UserTable, error) {
 	}
 	return &user, nil
 }
+
+func UserRegister(name, password, email, phone string) error {
+	var user model.UserTable
+	if err := DB.Where("name = ?", name).First(&user).Error; err == nil {
+		return errors.New("用户名已存在")
+	}
+
+	// 加密密码
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return errors.New("加密密码失败")
+	}
+
+	// 保存用户信息到数据库
+	user = model.UserTable{
+		Name:      name,
+		Password:  string(hashedPassword),
+		Email:     email,
+		Phone:     phone,
+		Role:      "user",
+		LastLogin: time.Now().Format("2006-01-02 15:04:05"),
+		Token:     utils.GenerateAuthToken(name),
+		Type:      "local",
+	}
+	if err := DB.Create(&user).Error; err != nil {
+		return errors.New("数据库保存用户信息失败")
+	}
+	return nil
+}

@@ -4,7 +4,7 @@
     <div class="table-bar flex justify-between items-center mb-3">
       <div>
         <ElButton icon="Plus" @click="form.toAdd">新增</ElButton>
-        <ElButton icon="Delete"@click="form.toDelete">删除</ElButton>
+        <!--<ElButton icon="Delete" @click="table.delete(form.model)">删除</ElButton>-->
       </div>
       <div>
         <ElButton icon="Refresh" round @click="table.request"></ElButton>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <!-- 列表 -->
-    <AgelTable class="flex-1" v-bind="table" v-model:page="table.page"> </AgelTable>
+    <AgelTable class="flex-1" v-bind="table"> </AgelTable>
     <!-- 弹窗表单 -->
     <ElDialog v-model="form.show" :title="form.title" width="800px" top="10vh">
       <ElForm :ref="(v) => (form.ref = v)" :model="form.model" label-width="80px">
@@ -148,6 +148,14 @@ const table = reactive({
   edit: (form) => {
     table.loading = true
     http.post(import.meta.env.VITE_APP_BASE_URL + `/cicd/update/repo/cluster`, form).then((res) => {
+      table.loading = false
+      table.request()
+    })
+  },
+  delete: (form) => {
+    table.loading = true
+    console.log(form)
+    http.delete(import.meta.env.VITE_APP_BASE_URL + `/cicd/delete/repo/cluster/${form.id}`).then((res) => {
       table.loading = false
       table.request()
     })

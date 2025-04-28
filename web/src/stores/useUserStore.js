@@ -6,7 +6,6 @@ import http from "@/api"
 
 
 export default defineStore('userStore', () => {
-  const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL
   const userInfo = useStorage('userInfo', getInitUserInfo(), sessionStorage)
 
   const token = computed(() => {
@@ -34,7 +33,7 @@ export default defineStore('userStore', () => {
 
   function loginApp(data) {
     return http({
-      url: `http://${{API_BASE_URL}}/user/login`,
+      url: import.meta.env.VITE_APP_BASE_URL + `/user/login`,
       method: 'post',
       data: data
     }).then((res) => {
@@ -45,7 +44,7 @@ export default defineStore('userStore', () => {
 
   function registerApp(data) {
     return http({
-      url: `http://${{API_BASE_URL}}/user/register`,
+      url: import.meta.env.VITE_APP_BASE_URL + `/user/register`,
       method: 'post',
       data: data
     }).then((res) => {

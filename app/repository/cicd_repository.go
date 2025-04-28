@@ -59,6 +59,7 @@ func GetClusterByName(name string) (model.ClusterTable, error) {
 	}
 
 	cluster.Config = string(kubeconfigBytes)
+
 	return cluster, nil
 }
 

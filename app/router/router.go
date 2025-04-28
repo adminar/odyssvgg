@@ -33,7 +33,7 @@ func SetupRouter(r *gin.Engine) {
 		_cicd.GET("fetch/repo/:type", cicd.HandleCICDFetchRepo)
 		_cicd.GET("get/repo/:type", cicd.HandleCICDGetRepo)
 		_cicd.POST("create/repo/:type", cicd.HandleCICDCreateRepo)
-		_cicd.POST("update/repo/:type/:id", cicd.HandleCICDUpdateRepo)
+		_cicd.POST("update/repo/:type", cicd.HandleCICDUpdateRepo)
 		_cicd.GET("delete/repo/:type/:id", cicd.HandleCICDDeleteRepo)
 	}
 }

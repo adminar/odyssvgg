@@ -20,6 +20,10 @@ router.beforeEach((to) => {
   if (!hasToken && !isWhitelist) {
     ElMessage.warning('请先登录后再操作')
     return '/login'
+  } 
+
+  if (hasToken && isWhitelist) {
+    return '/home'
   }
 
   if (!hasRole) {
